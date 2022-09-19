@@ -2,7 +2,7 @@
 
 namespace em
 {
-    Disassembler::Disassembler(unsigned char *buffer) : buffer(buffer), prevOpSize(0) {}
+    Disassembler::Disassembler(unsigned char *buffer, int size) : buffer(buffer), size(size), prevOpSize(0) {}
 
     int Disassembler::instructionSize(char op)
     {
@@ -518,14 +518,12 @@ namespace em
             return 1;
         }
 
-        //TODO: 3
-
         return 0;
     }
 
     std::unique_ptr<char[]> Disassembler::next()
     {
-        if (*buffer == NULL)
+        if (size == 0)
         {
             prevOpSize = 0;
             return NULL;
@@ -539,6 +537,8 @@ namespace em
             op[i] = *buffer;
             buffer++;
         }
+
+        size -= prevOpSize;
 
         return op;
     }
