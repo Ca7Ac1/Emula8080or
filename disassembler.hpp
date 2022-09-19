@@ -13,14 +13,15 @@ namespace em
         
         int size;
         int prevOpSize;
-        int instructionSize(char op); 
-        
+
+        int instructionSize(char op) const;
+
     public:
         Disassembler(unsigned char *buffer, int size);
 
         std::unique_ptr<char[]> next();
         std::string nextInstruction();
-        int getOpSize();
+        int getOpSize() const;
     };
 }
 

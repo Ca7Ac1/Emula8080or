@@ -4,7 +4,7 @@ namespace em
 {
     Disassembler::Disassembler(unsigned char *buffer, int size) : buffer(buffer), size(size), prevOpSize(0) {}
 
-    int Disassembler::instructionSize(char op)
+    int Disassembler::instructionSize(char op) const
     {
         switch (op)
         {
@@ -547,6 +547,11 @@ namespace em
     {
         std::unique_ptr<char[]> op = next();
 
+        if (op == NULL)
+        {
+            return "";
+        }
+
         switch (op[0])
         {
         case 0x00:
@@ -1062,7 +1067,7 @@ namespace em
         }
     }
 
-    int Disassembler::getOpSize()
+    int Disassembler::getOpSize() const
     {
         return prevOpSize;
     }
