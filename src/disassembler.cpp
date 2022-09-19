@@ -1,4 +1,5 @@
 #include "disassembler.hpp"
+#include <iostream>
 
 namespace em
 {
@@ -1065,6 +1066,8 @@ namespace em
         case 0xff:
             return "RST        7";
         }
+
+        throw std::runtime_error("Byte did not match any pattern");
     }
 
     int Disassembler::getOpSize() const

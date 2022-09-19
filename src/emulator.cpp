@@ -11,11 +11,12 @@ namespace em
             throw std::runtime_error("Couldn't read rom file");
         }
 
-        size_t size = byteReader.tellg();
+        read = byteReader.tellg();
+
         byteReader.seekg(0, std::ios::beg);
 
-        bytes = new unsigned char[size];
-        for (int i = 0; i < size; i++)
+        bytes = new unsigned char[read];
+        for (int i = 0; i < read; i++)
         {
             byteReader >> bytes[i];
         }

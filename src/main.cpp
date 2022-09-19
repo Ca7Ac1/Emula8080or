@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    em::Emulator spaceInvaders("roms/invaders.e");
+    em::Emulator spaceInvaders("roms/spaceinvaders/invaders.e");
 
     spaceInvaders.printOps();
 
