@@ -2,7 +2,7 @@
 
 namespace em
 {
-    Disassembler::Disassembler(unsigned char *buffer, int size) : buffer(buffer), size(size), prevOpSize(0) {}
+    Disassembler::Disassembler(unsigned char *buffer, size_t size) : buffer(buffer), size(size), prevOpSize(0) {}
 
     int Disassembler::instructionSize(char op) const
     {

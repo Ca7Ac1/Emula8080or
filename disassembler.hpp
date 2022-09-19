@@ -11,13 +11,13 @@ namespace em
     private:
         unsigned char *buffer;
         
-        int size;
+        size_t size;
         int prevOpSize;
 
         int instructionSize(char op) const;
 
     public:
-        Disassembler(unsigned char *buffer, int size);
+        Disassembler(unsigned char *buffer, size_t size);
 
         std::unique_ptr<char[]> next();
         std::string nextInstruction();
