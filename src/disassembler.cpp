@@ -4,7 +4,7 @@ namespace em
 {
     Disassembler::Disassembler(unsigned char *buffer, size_t size) : buffer(buffer), size(size), prevOpSize(0) {}
 
-    int Disassembler::instructionSize(char op) const
+    int Disassembler::instructionSize(unsigned char op) const
     {
         switch (op)
         {
@@ -521,7 +521,7 @@ namespace em
         return 0;
     }
 
-    std::unique_ptr<char[]> Disassembler::next()
+    std::unique_ptr<unsigned char[]> Disassembler::next()
     {
         if (size == 0)
         {
@@ -530,7 +530,7 @@ namespace em
         }
 
         prevOpSize = instructionSize(*buffer);
-        std::unique_ptr<char[]> op = std::unique_ptr<char[]>(new char[prevOpSize]);
+        std::unique_ptr<unsigned char[]> op = std::unique_ptr<unsigned char[]>(new unsigned char[prevOpSize]);
 
         for (int i = 0; i < prevOpSize; i++)
         {
@@ -545,7 +545,7 @@ namespace em
 
     std::string Disassembler::nextInstruction()
     {
-        std::unique_ptr<char[]> op = next();
+        std::unique_ptr<unsigned char[]> op = next();
 
         if (op == NULL)
         {

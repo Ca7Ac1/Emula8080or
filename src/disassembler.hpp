@@ -14,12 +14,12 @@ namespace em
         size_t size;
         int prevOpSize;
 
-        int instructionSize(char op) const;
+        int instructionSize(unsigned char op) const;
 
     public:
         Disassembler(unsigned char *buffer, size_t size);
 
-        std::unique_ptr<char[]> next();
+        std::unique_ptr<unsigned char[]> next();
         std::string nextInstruction();
         int getOpSize() const;
     };
