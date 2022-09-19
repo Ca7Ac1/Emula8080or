@@ -1,5 +1,4 @@
 #include "disassembler.hpp"
-#include <iostream>
 
 namespace em
 {

@@ -2,7 +2,7 @@
 
 namespace em
 {
-    unsigned char *Emulator::readBytes(std::string rom)
+    Emulator::Emulator(std::string rom) : ops(NULL) 
     {
         std::ifstream byteReader(rom, std::ios::ate | std::ios::binary);
 
@@ -11,32 +11,33 @@ namespace em
             throw std::runtime_error("Couldn't read rom file");
         }
 
-        read = byteReader.tellg();
+        size_t size = byteReader.tellg();
 
         byteReader.seekg(0, std::ios::beg);
 
-        bytes = new unsigned char[read];
-        for (int i = 0; i < read; i++)
+        bytes = new unsigned char[size];
+        for (int i = 0; i < size; i++)
         {
             byteReader >> bytes[i];
         }
 
-        return bytes;
+        *ops = Disassembler(bytes, size);
     }
 
-    Emulator::Emulator(std::string rom) : bytes(NULL), read(0), ops(readBytes(rom), read) {}
     Emulator::~Emulator() { delete[] bytes; }
 
     void Emulator::emulate() {}
 
     void Emulator::printOps() 
     {
-        std::string op = ops.nextInstruction();
+        std::string op = ops->nextInstruction();
 
         while (!op.empty())
         {
             std::cout << op << '\n';
-            op = ops.nextInstruction();
+            op = ops->nextInstruction();
         }
+
+        std::cout << std::flush;
     }
 }

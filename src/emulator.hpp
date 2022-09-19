@@ -13,12 +13,9 @@ namespace em
     class Emulator
     {
     private:
-        Disassembler ops;
+        Disassembler *ops;
 
         unsigned char *bytes;
-        size_t read;
-
-        unsigned char *readBytes(std::string rom);
 
     public:
         Emulator(std::string rom);
