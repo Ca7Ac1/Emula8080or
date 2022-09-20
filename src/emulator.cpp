@@ -36,10 +36,15 @@ namespace em
     {
         std::string op = ops->nextInstruction();
 
+        int currOp = 0;
+
         while (!op.empty())
         {
+            std::cout << std::setw(4) << std::setfill('0') << currOp << "   ";
             std::cout << op << '\n';
+
             op = ops->nextInstruction();
+            currOp++;
         }
 
         std::cout << std::flush;

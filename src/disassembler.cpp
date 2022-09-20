@@ -1011,59 +1011,59 @@ namespace em
         case 0xe4:
             return "CPO        (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xe5:
-            return "PUSH    H";
+            return "PUSH  H";
         case 0xe6:
-            return "ANI     D8 (" + std::string(1, op[1]) + ")";
+            return "ANI   D8 (" + std::string(1, op[1]) + ")";
         case 0xe7:
-            return "RST     4";
+            return "RST   4";
         case 0xe8:
             return "RPE";
         case 0xe9:
             return "PCHL";
         case 0xea:
-            return "JPE         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JPE      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xeb:
             return "XCHG";
         case 0xec:
-            return "CPE         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CPE      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xed:
             return "NOP";
         case 0xee:
-            return "XRI      D8 (" + std::string(1, op[1]) + ")";
+            return "XRI    D8 (" + std::string(1, op[1]) + ")";
         case 0xef:
-            return "RST      5";
+            return "RST    5";
         case 0xf0:
-            return "RP	     1";
+            return "RP	   1";
         case 0xf1:
-            return "POP      PSW";
+            return "POP    PSW";
         case 0xf2:
-            return "JP           (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JP         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xf3:
             return "DI";
         case 0xf4:
-            return "CP           (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CP         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xf5:
-            return "PUSH      PSW";
+            return "PUSH    PSW";
         case 0xf6:
-            return "ORI       D8 (" + std::string(1, op[1]) + ")";
+            return "ORI     D8 (" + std::string(1, op[1]) + ")";
         case 0xf7:
-            return "RST       6";
+            return "RST      6";
         case 0xf8:
             return "RM";
         case 0xf9:
             return "SPHL";
         case 0xfa:
-            return "JM            (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JM         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xfb:
             return "EI";
         case 0xfc:
-            return "CM            (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CM         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
         case 0xfd:
             return "NOP";
         case 0xfe:
-            return "CPI        D8 (" + std::string(1, op[1]) + ")";
+            return "CPI     D8 (" + std::string(1, op[1]) + ")";
         case 0xff:
-            return "RST        7";
+            return "RST     7";
         }
 
         throw std::runtime_error("Byte did not match any pattern");
