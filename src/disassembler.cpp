@@ -521,16 +521,16 @@ namespace em
         return 0;
     }
 
-    std::unique_ptr<unsigned char[]> Disassembler::next()
+    std::vector<unsigned char> Disassembler::next()
     {
         if (size == 0)
         {
             prevOpSize = 0;
-            return NULL;
+            return std::vector<unsigned char>(0, '\0');
         }
 
         prevOpSize = instructionSize(*buffer);
-        std::unique_ptr<unsigned char[]> op = std::unique_ptr<unsigned char[]>(new unsigned char[prevOpSize]);
+        std::vector<unsigned char> op(prevOpSize, '\0');
 
         for (int i = 0; i < prevOpSize; i++)
         {
@@ -545,9 +545,9 @@ namespace em
 
     std::string Disassembler::nextInstruction()
     {
-        std::unique_ptr<unsigned char[]> op = next();
+        std::vector<unsigned char> op = next();
 
-        if (op == NULL)
+        if (op.empty())
         {
             return "";
         }

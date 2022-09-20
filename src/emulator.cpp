@@ -21,10 +21,14 @@ namespace em
             byteReader >> bytes[i];
         }
 
-        *ops = Disassembler(bytes, size);
+        ops = new Disassembler(bytes, size);
     }
 
-    Emulator::~Emulator() { delete[] bytes; }
+    Emulator::~Emulator()
+    {
+        delete ops;
+        delete[] bytes;
+    }
 
     void Emulator::emulate() {}
 

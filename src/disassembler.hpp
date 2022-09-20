@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace em
 {
@@ -19,7 +20,7 @@ namespace em
     public:
         Disassembler(unsigned char *buffer, size_t size);
 
-        std::unique_ptr<unsigned char[]> next();
+        std::vector<unsigned char> next();
         std::string nextInstruction();
         int getOpSize() const;
     };
