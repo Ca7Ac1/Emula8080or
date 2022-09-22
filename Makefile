@@ -3,8 +3,8 @@ CXXFLAGS = -std=c++17
 OUT = emulator.exe
 SRC = src
 BIN = bin
-OBJS = main.o emulator.o disassembler.o
-HEADERS = $(SRC)/emulator.hpp $(SRC)/disassembler.hpp
+OBJS = main.o emulator.o disassembler.o state.o
+HEADERS = $(SRC)/emulator.hpp $(SRC)/disassembler.hpp $(SRC)/state.hpp
 
 all: compile
 	./$(OUT)
@@ -20,6 +20,9 @@ emulator.o: $(SRC)/emulator.cpp $(HEADERS)
 
 disassembler.o: $(SRC)/disassembler.cpp $(HEADERS) 
 	$(CC) $(CXXFLAGS) -c $(SRC)/disassembler.cpp	
+
+state.o: $(SRC)/state.cpp $(HEADERS) 
+	$(CC) $(CXXFLAGS) -c $(SRC)/state.cpp	
 
 clean: 
 	rm -f $(BIN)/*

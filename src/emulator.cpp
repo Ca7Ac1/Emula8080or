@@ -2,7 +2,7 @@
 
 namespace em
 {
-    Emulator::Emulator(std::string rom) : ops(NULL) 
+    Emulator::Emulator(std::string rom) : ops(NULL), state(memory)
     {
         std::ifstream byteReader(rom, std::ios::ate | std::ios::binary);
 
@@ -28,9 +28,14 @@ namespace em
     {
         delete ops;
         delete[] bytes;
+        delete[] memory;
     }
 
-    void Emulator::emulate() {}
+    void Emulator::emulate()
+    {
+        std::vector<unsigned char> instruction = ops->next();
+        state.process(instruction, ops->getOpSize());
+    }
 
     void Emulator::printOps() 
     {
