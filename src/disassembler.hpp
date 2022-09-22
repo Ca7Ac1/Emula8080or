@@ -4,6 +4,9 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <sstream>
+#include <iomanip>
+#include <stdexcept>
 
 namespace em
 {
@@ -11,7 +14,7 @@ namespace em
     {
     private:
         unsigned char *buffer;
-        
+
         size_t size;
         int prevOpSize;
 

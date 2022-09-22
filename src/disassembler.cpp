@@ -40,6 +40,8 @@ namespace em
             return 2;
         case 0x0f:
             return 1;
+        case 0x10:
+            return 1;
         case 0x11:
             return 3;
         case 0x12:
@@ -117,6 +119,8 @@ namespace em
         case 0x36:
             return 2;
         case 0x37:
+            return 1;
+        case 0x38:
             return 1;
         case 0x39:
             return 1;
@@ -518,7 +522,7 @@ namespace em
             return 1;
         }
 
-        return 0;
+        throw std::runtime_error("Byte did not match any pattern");
     }
 
     std::vector<unsigned char> Disassembler::next()
@@ -552,12 +556,31 @@ namespace em
             return "";
         }
 
+        std::string arg1 = "";
+        std::string arg2 = "";
+
+        std::stringstream ss;
+        if (getOpSize() >= 2)
+        {
+            ss << std::hex << (int)op[1];
+            arg1 = ss.str();
+
+            ss.str(std::string());
+        }
+
+        if (getOpSize() == 3)
+        {
+            ss << std::hex << (int)op[2];
+            arg2 = arg1;
+            arg1 = ss.str();
+        }
+
         switch (op[0])
         {
         case 0x00:
             return "NOP";
         case 0x01:
-            return "LXI   B  (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LXI   B  (" + arg1 + arg2 + ")";
         case 0x02:
             return "STAX  B";
         case 0x03:
@@ -567,7 +590,7 @@ namespace em
         case 0x05:
             return "DCR   B";
         case 0x06:
-            return "MVI   B  (" + std::string(1, op[1]) + ")";
+            return "MVI   B  (" + arg1 + ")";
         case 0x07:
             return "RLC";
         case 0x08:
@@ -583,11 +606,13 @@ namespace em
         case 0x0d:
             return "DCR   C";
         case 0x0e:
-            return "MVI   C  (" + std::string(1, op[1]) + ")";
+            return "MVI   C  (" + arg1 + ")";
         case 0x0f:
             return "RRC";
+        case 0x10:
+            return "NOP";
         case 0x11:
-            return "LXI   D  (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LXI   D  (" + arg1 + arg2 + ")";
         case 0x12:
             return "STAX  D";
         case 0x13:
@@ -597,7 +622,7 @@ namespace em
         case 0x15:
             return "DCR   D";
         case 0x16:
-            return "MVI   D  (" + std::string(1, op[1]) + ")";
+            return "MVI   D  (" + arg1 + ")";
         case 0x17:
             return "RAL";
         case 0x18:
@@ -613,15 +638,15 @@ namespace em
         case 0x1d:
             return "DCR   E";
         case 0x1e:
-            return "MVI   E  (" + std::string(1, op[1]) + ")";
+            return "MVI   E  (" + arg1 + ")";
         case 0x1f:
             return "RAR";
         case 0x20:
             return "NOP";
         case 0x21:
-            return "LXI   H  (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LXI   H  (" + arg1 + arg2 + ")";
         case 0x22:
-            return "SHLD     (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "SHLD     (" + arg1 + arg2 + ")";
         case 0x23:
             return "INX   H";
         case 0x24:
@@ -629,7 +654,7 @@ namespace em
         case 0x25:
             return "DCR   H";
         case 0x26:
-            return "MVI   H  (" + std::string(1, op[1]) + ")";
+            return "MVI   H  (" + arg1 + ")";
         case 0x27:
             return "DAA";
         case 0x28:
@@ -637,7 +662,7 @@ namespace em
         case 0x29:
             return "DAD   H";
         case 0x2a:
-            return "LHLD     (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LHLD     (" + arg1 + arg2 + ")";
         case 0x2b:
             return "DCX   H";
         case 0x2c:
@@ -645,15 +670,15 @@ namespace em
         case 0x2d:
             return "DCR   L";
         case 0x2e:
-            return "MVI   L  (" + std::string(1, op[1]) + ")";
+            return "MVI   L  (" + arg1 + ")";
         case 0x2f:
             return "CMA";
         case 0x30:
             return "SIM";
         case 0x31:
-            return "LXI   SP (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LXI   SP (" + arg1 + arg2 + ")";
         case 0x32:
-            return "STA      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "STA      (" + arg1 + arg2 + ")";
         case 0x33:
             return "INX   SP";
         case 0x34:
@@ -661,7 +686,7 @@ namespace em
         case 0x35:
             return "DCR   M";
         case 0x36:
-            return "MVI   M  (" + std::string(1, op[1]) + ")";
+            return "MVI   M  (" + arg1 + ")";
         case 0x37:
             return "STC";
         case 0x38:
@@ -669,7 +694,7 @@ namespace em
         case 0x39:
             return "DAD   SP";
         case 0x3a:
-            return "LDA      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "LDA      (" + arg1 + arg2 + ")";
         case 0x3b:
             return "DCX   SP";
         case 0x3c:
@@ -677,7 +702,7 @@ namespace em
         case 0x3d:
             return "DCR   A";
         case 0x3e:
-            return "MVI   A (" + std::string(1, op[1]) + ")";
+            return "MVI   A (" + arg1 + ")";
         case 0x3f:
             return "CMC";
         case 0x40:
@@ -941,15 +966,15 @@ namespace em
         case 0xc1:
             return "POP   B";
         case 0xc2:
-            return "JNZ      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JNZ      (" + arg1 + arg2 + ")";
         case 0xc3:
-            return "JMP      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JMP      (" + arg1 + arg2 + ")";
         case 0xc4:
-            return "CNZ      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CNZ      (" + arg1 + arg2 + ")";
         case 0xc5:
             return "PUSH  B";
         case 0xc6:
-            return "ADI   D  (" + std::string(1, op[1]) + ")";
+            return "ADI   D  (" + arg1 + ")";
         case 0xc7:
             return "RST   0";
         case 0xc8:
@@ -957,15 +982,15 @@ namespace em
         case 0xc9:
             return "RET";
         case 0xca:
-            return "JZ       (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JZ       (" + arg1 + arg2 + ")";
         case 0xcb:
             return "NOP";
         case 0xcc:
-            return "CZ       (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CZ       (" + arg1 + arg2 + ")";
         case 0xcd:
-            return "CALL     (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CALL     (" + arg1 + arg2 + ")";
         case 0xce:
-            return "ACI   D8 (" + std::string(1, op[1]) + ")";
+            return "ACI   D8 (" + arg1 + ")";
         case 0xcf:
             return "RST";
         case 0xd0:
@@ -973,15 +998,15 @@ namespace em
         case 0xd1:
             return "POP   D";
         case 0xd2:
-            return "JNC      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JNC      (" + arg1 + arg2 + ")";
         case 0xd3:
-            return "OUT   D8 (" + std::string(1, op[1]) + ")";
+            return "OUT   D8 (" + arg1 + ")";
         case 0xd4:
-            return "CNC      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CNC      (" + arg1 + arg2 + ")";
         case 0xd5:
             return "PUSH  D";
         case 0xd6:
-            return "SUI   D8 (" + std::string(1, op[1]) + ")";
+            return "SUI   D8 (" + arg1 + ")";
         case 0xd7:
             return "RST   2";
         case 0xd8:
@@ -989,15 +1014,15 @@ namespace em
         case 0xd9:
             return "NOP";
         case 0xda:
-            return "JC       (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JC       (" + arg1 + arg2 + ")";
         case 0xdb:
             return "IN    D8";
         case 0xdc:
-            return "CC       (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CC       (" + arg1 + arg2 + ")";
         case 0xdd:
             return "NOP";
         case 0xde:
-            return "SBI   D8 (" + std::string(1, op[1]) + ")";
+            return "SBI   D8 (" + arg1 + ")";
         case 0xdf:
             return "RST   3";
         case 0xe0:
@@ -1005,15 +1030,15 @@ namespace em
         case 0xe1:
             return "POP   H";
         case 0xe2:
-            return "JPO        (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JPO        (" + arg1 + arg2 + ")";
         case 0xe3:
             return "XTHL";
         case 0xe4:
-            return "CPO        (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CPO        (" + arg1 + arg2 + ")";
         case 0xe5:
             return "PUSH  H";
         case 0xe6:
-            return "ANI   D8 (" + std::string(1, op[1]) + ")";
+            return "ANI   D8 (" + arg1 + ")";
         case 0xe7:
             return "RST   4";
         case 0xe8:
@@ -1021,15 +1046,15 @@ namespace em
         case 0xe9:
             return "PCHL";
         case 0xea:
-            return "JPE      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JPE      (" + arg1 + arg2 + ")";
         case 0xeb:
             return "XCHG";
         case 0xec:
-            return "CPE      (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CPE      (" + arg1 + arg2 + ")";
         case 0xed:
             return "NOP";
         case 0xee:
-            return "XRI    D8 (" + std::string(1, op[1]) + ")";
+            return "XRI    D8 (" + arg1 + ")";
         case 0xef:
             return "RST    5";
         case 0xf0:
@@ -1037,33 +1062,33 @@ namespace em
         case 0xf1:
             return "POP    PSW";
         case 0xf2:
-            return "JP         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JP         (" + arg1 + arg2 + ")";
         case 0xf3:
             return "DI";
         case 0xf4:
-            return "CP         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CP         (" + arg1 + arg2 + ")";
         case 0xf5:
-            return "PUSH    PSW";
+            return "PUSH   PSW";
         case 0xf6:
-            return "ORI     D8 (" + std::string(1, op[1]) + ")";
+            return "ORI    D8 (" + arg1 + ")";
         case 0xf7:
-            return "RST      6";
+            return "RST    6";
         case 0xf8:
             return "RM";
         case 0xf9:
             return "SPHL";
         case 0xfa:
-            return "JM         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "JM        (" + arg1 + arg2 + ")";
         case 0xfb:
             return "EI";
         case 0xfc:
-            return "CM         (" + std::string(1, op[2]) + std::string(1, op[1]) + ")";
+            return "CM        (" + arg1 + arg2 + ")";
         case 0xfd:
             return "NOP";
         case 0xfe:
-            return "CPI     D8 (" + std::string(1, op[1]) + ")";
+            return "CPI    D8 (" + arg1 + ")";
         case 0xff:
-            return "RST     7";
+            return "RST    7";
         }
 
         throw std::runtime_error("Byte did not match any pattern");
