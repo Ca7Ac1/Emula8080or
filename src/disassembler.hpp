@@ -15,6 +15,7 @@ namespace em
     private:
         unsigned char *buffer;
 
+        size_t pos;
         size_t size;
         int prevOpSize;
 
@@ -25,6 +26,8 @@ namespace em
 
         std::vector<unsigned char> next();
         std::string nextInstruction();
+        int getPos();
+        void jump(size_t loc);
         int getOpSize() const;
     };
 }

@@ -2,7 +2,50 @@
 
 namespace em
 {
-    Disassembler::Disassembler(unsigned char *buffer, size_t size) : buffer(buffer), size(size), prevOpSize(0) {}
+    Disassembler::Disassembler(unsigned char *buffer, size_t size) : buffer(buffer), size(size), prevOpSize(0), pos(0) {}
+
+    std::vector<unsigned char> Disassembler::next()
+    {
+        if (pos == size)
+        {
+            prevOpSize = 0;
+            return std::vector<unsigned char>(0, '\0');
+        }
+
+        prevOpSize = instructionSize(*buffer);
+        std::vector<unsigned char> op(prevOpSize, '\0');
+
+        for (int i = 0; i < prevOpSize; i++)
+        {
+            op[i] = *buffer;
+            buffer++;
+        }
+
+        pos += prevOpSize;
+
+        return op;
+    }
+
+    int Disassembler::getOpSize() const
+    {
+        return prevOpSize;
+    }
+
+    int Disassembler::getPos()
+    {
+        return pos;
+    }
+
+    void Disassembler::jump(size_t loc)
+    {
+        if (loc < 0 || loc > size)
+        {
+            throw std::runtime_error("Trying to jump to invalid memory location");
+        }
+
+        buffer += loc - pos;
+        pos = loc;
+    }
 
     int Disassembler::instructionSize(unsigned char op) const
     {
@@ -523,28 +566,6 @@ namespace em
         }
 
         throw std::runtime_error("Byte did not match any pattern");
-    }
-
-    std::vector<unsigned char> Disassembler::next()
-    {
-        if (size == 0)
-        {
-            prevOpSize = 0;
-            return std::vector<unsigned char>(0, '\0');
-        }
-
-        prevOpSize = instructionSize(*buffer);
-        std::vector<unsigned char> op(prevOpSize, '\0');
-
-        for (int i = 0; i < prevOpSize; i++)
-        {
-            op[i] = *buffer;
-            buffer++;
-        }
-
-        size -= prevOpSize;
-
-        return op;
     }
 
     std::string Disassembler::nextInstruction()
@@ -1092,10 +1113,5 @@ namespace em
         }
 
         throw std::runtime_error("Byte did not match any pattern");
-    }
-
-    int Disassembler::getOpSize() const
-    {
-        return prevOpSize;
     }
 }
