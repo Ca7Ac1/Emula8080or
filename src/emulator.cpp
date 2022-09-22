@@ -2,8 +2,10 @@
 
 namespace em
 {
-    Emulator::Emulator(std::string rom) : ops(NULL), state(memory)
+    Emulator::Emulator(std::string rom) : memory(NULL), ops(NULL), state(memory)
     {
+        memory = new uint8_t[1000];
+
         std::ifstream byteReader(rom, std::ios::ate | std::ios::binary);
 
         if (byteReader.fail())
