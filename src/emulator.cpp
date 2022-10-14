@@ -2,7 +2,7 @@
 
 namespace em
 {
-    Emulator::Emulator(std::string rom) : memory(NULL), ops(NULL), state(memory)
+    Emulator::Emulator(std::string rom) : memory(NULL), ops(NULL), processor(&memory)
     {
         memory = new uint8_t[1000];
 
@@ -36,7 +36,14 @@ namespace em
     void Emulator::emulate()
     {
         std::vector<unsigned char> instruction = ops->next();
-        state.process(instruction, ops->getOpSize());
+
+        if (ops->getOpSize() == 0)
+        {
+            std::cout << "Emulation terminated" << std::endl;
+            return;
+        }
+
+        processor.process(instruction, ops->getOpSize());
     }
 
     void Emulator::printOps() 

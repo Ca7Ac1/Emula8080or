@@ -1,10 +1,12 @@
-#include "state.hpp"
+#include "processor.hpp"
 
 namespace em
 {
-    State::State(uint8_t *memory) : memory(memory) {}
-    void State::process(const std::vector<unsigned char> &op, int opCount)
+    Processor::Processor(uint8_t **memory) : memory(memory) {}
+    void Processor::process(const std::vector<unsigned char> &op, int opCount)
     {
+        uint8_t *mem = *memory;
+
         switch (op[0])
         {
         case 0x00:

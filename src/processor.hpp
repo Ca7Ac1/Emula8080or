@@ -1,5 +1,5 @@
-#ifndef STATE_HPP
-#define STATE_HPP
+#ifndef PROCESSOR_HPP
+#define PROCESSOR_HPP
 
 #include <cstdint>
 #include <vector>
@@ -17,7 +17,7 @@ namespace em
         pad = 3
     };
 
-    class State
+    class Processor
     {
     private:
         uint8_t a;
@@ -33,12 +33,12 @@ namespace em
         uint16_t sp;
         uint16_t pc;
 
-        uint8_t *memory;
+        uint8_t **memory;
 
         ConditionCodes cc;
 
     public:
-        State(uint8_t *memory);
+        Processor(uint8_t **memory);
 
         void process(const std::vector<unsigned char> &op, int opCount);
     };

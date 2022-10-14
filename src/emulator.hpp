@@ -2,7 +2,7 @@
 #define EMULATOR_HPP
 
 #include "disassembler.hpp"
-#include "state.hpp"
+#include "processor.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -18,7 +18,7 @@ namespace em
     {
     private:
         Disassembler *ops;
-        State state;
+        Processor processor;
 
         unsigned char *bytes;
 
